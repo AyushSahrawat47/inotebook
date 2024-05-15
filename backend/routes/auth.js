@@ -38,6 +38,9 @@ router.post('/createuser', [
                 password: secPass,
                 email: req.body.email,
             });
+
+            //using jwt
+            //sending id as a token becuase id is indexed 
             const data = {
                 user: {
                     id: user.id
@@ -45,6 +48,7 @@ router.post('/createuser', [
             }
             const authToken = jwt.sign(data, JWT_SECRET);
             res.json(authToken)
+
         } catch (error) {
             console.error(error.message);
             res.status(500).send("Internal Server Error")

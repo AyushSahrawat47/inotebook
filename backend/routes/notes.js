@@ -21,7 +21,7 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 //ROUTE 2 : Add a new note using  : POST "/api/notes/addnote". (Login required)
 router.get('/addnote', fetchuser,
    [
-      //validates whether the information entered are ok or just any gibberish shit is entered
+      //validates whether the information entered are ok or just any gibberish shit is entered (basically express validator is being used here)
       body('title', 'thoda bada likh na badhwe hathon mei mehndi lagi hai kya ?').isLength({ min: 3 }),
       body('description', 'phir backchodi de raha hai').isLength({ min: 5 })
    ],
@@ -39,6 +39,7 @@ router.get('/addnote', fetchuser,
          const note = new Notes({
             title, description, tag, user: req.user.id
          })
+         //note is finally being saved in the database
          const savedNote = await note.save()
          res.json(savedNote)
       }
@@ -59,15 +60,15 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
       if (tag) { newNote.tag = tag };
 
       //Find the note to be updated  and update it 
-      let note = await Notes.findById(req.params.id);
+      let note = await Notes.findById(req.params.id);  //useParams hook is being used here this is extracting the id param that is given in the http request
       if (!note) { res.status(404).send("Not Found") }
 
-      //checking if the user loggedIn is the same user that created that note and is upadting the node
+      //checking if the user loggedIn is the same user that created that note and is updating the node (basically checking user authentication)
       if (note.user.toString() !== req.user.id) {                  //note.user.toString will give me the id of the user that created the note 
          return res.status(401).send("Not Allowed")
       }
-
-      note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })
+      // finally using findByIdAndUpdate to get the job done
+      note = await Notes.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true })// $set:newNOte - set the fields as specified in the newNote
       res.json({ note });
    }
    catch (error) {
@@ -79,8 +80,6 @@ router.put('/updatenote/:id', fetchuser, async (req, res) => {
 //ROUTE 4 : Deleting the existing note using : DELETE /api/note/deletenote. (Login required)
 router.delete('/deletenote/:id', fetchuser, async (req, res) => {
    try {
-      const { title, description, tag } = req.body;
-
       //Find the note to be deleted  and delete it 
       let note = await Notes.findById(req.params.id);
       if (!note) { res.status(404).send("Not Found") }
