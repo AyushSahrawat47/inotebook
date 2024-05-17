@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import About from "./components/About";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NoteState from "./context/notes/NoteState";
+import Alert from "./components/Alert";
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
       <NoteState>
         <Router>
           <Navbar />
+          <Alert message={'it is working'}/>
           <div className="container">
             <Routes>
               <Route

@@ -7,6 +7,8 @@ const NoteItem = (props) => {
                         <div className="card-body">
                             <h3>{note.title}</h3>
                             <p className="card-text">{note.description}</p>
+                            <i className="fa-solid fa-trash" style={{cursor:'pointer'}}></i>
+                            <i className="fa-solid fa-pen-to-square mx-4" style={{cursor:'pointer'}}></i>
                         </div>
                     </div>
             </div>
