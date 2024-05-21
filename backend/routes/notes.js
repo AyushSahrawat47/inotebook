@@ -19,7 +19,7 @@ router.get('/fetchallnotes', fetchuser, async (req, res) => {
 
 
 //ROUTE 2 : Add a new note using  : POST "/api/notes/addnote". (Login required)
-router.get('/addnote', fetchuser,
+router.post('/addnote', fetchuser,
    [
       //validates whether the information entered are ok or just any gibberish shit is entered (basically express validator is being used here)
       body('title', 'thoda bada likh na badhwe hathon mei mehndi lagi hai kya ?').isLength({ min: 3 }),
